@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+langchain
+openai
+qdrant-client
+elasticsearch
+pymupdf
+unstructured
+sentence-transformers
+python-dotenv
+cohere
+langgraph
