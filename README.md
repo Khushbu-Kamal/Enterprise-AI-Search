@@ -1,6 +1,6 @@
 Enterprise AI Search and Retrieval Platform
 Technical Architecture Document
-1. Introduction
+**1. Introduction**
 
 This document describes the design and implementation of an enterprise-grade Retrieval-Augmented Generation (RAG) platform built using modern semantic retrieval techniques, vector databases, hybrid search architecture, reranking pipelines, and grounded language model synthesis.
 
@@ -22,11 +22,11 @@ Lexical retrieval
 Hybrid retrieval fusion
 Cross-encoder reranking
 Grounded answer generation using local LLMs
-2. System Objectives
+**2. System Objectives**
 
 The platform was designed to solve the following problems:
 
-2.1 Enterprise Knowledge Retrieval
+**2.1 Enterprise Knowledge Retrieval**
 
 Enterprise information exists across:
 
@@ -44,7 +44,7 @@ Conceptual search
 Operational precision
 Retrieval grounding
 Scalable semantic indexing
-2.2 Retrieval-Augmented Generation
+**2.2 Retrieval-Augmented Generation**
 
 Large Language Models alone suffer from:
 
@@ -58,7 +58,7 @@ The LLM acts as:
 
 a synthesis layer
 not the knowledge source itself
-3. High-Level Architecture
+**3. High-Level Architecture**
 
 System architecture:
 
@@ -85,8 +85,8 @@ Cross-Encoder Reranking
 Grounded Context Assembly
           ↓
 LLM-Based Answer Generation
-4. Filesystem Discovery Layer
-4.1 Purpose
+**4. Filesystem Discovery Layer
+4.1 Purpose**
 
 The ingestion layer recursively scans enterprise document repositories and discovers supported files.
 
@@ -95,7 +95,7 @@ Supported formats:
 PDF
 Markdown
 Text
-4.2 Implementation
+**4.2 Implementation**
 
 Implemented using:
 
@@ -108,17 +108,16 @@ Path(folder_path).rglob("*")
 
 This layer converts raw enterprise folders into discoverable corpora.
 
-5. Document Parsing Layer
-5.1 Purpose
+**5. Document Parsing Layer
+5.1 Purpose**
 
 Enterprise documents exist in heterogeneous formats and structures.
 
 The parser layer normalizes all documents into a unified internal representation.
 
-5.2 Technologies Used
+**5.2 Technologies Used**
 
-LangChain document loaders:
-
+**LangChain document loaders:**
 PyPDFLoader
 UnstructuredMarkdownLoader
 TextLoader
@@ -138,14 +137,14 @@ Example:
 
 This abstraction allows downstream retrieval components to operate independently of source format.
 
-6. Chunking Layer
-6.1 Motivation
+**6. Chunking Layer
+6.1 Motivation**
 
 Large enterprise documents reduce retrieval precision because semantic search performs poorly over extremely large contexts.
 
 Documents are therefore segmented into smaller retrieval units.
 
-6.2 Chunking Strategy
+**6.2 Chunking Strategy**
 
 Implemented using:
 
@@ -155,7 +154,7 @@ Configuration:
 
 chunk_size = 1000
 chunk_overlap = 200
-6.3 Why Recursive Chunking
+**6.3 Why Recursive Chunking**
 
 Recursive chunking preserves:
 
@@ -168,14 +167,14 @@ This significantly improves:
 retrieval quality
 grounding precision
 reranking effectiveness
-7. Embedding Generation Layer
-7.1 Purpose
+**7. Embedding Generation Layer
+7.1 Purpose**
 
 Text chunks are converted into dense semantic vectors.
 
 These embeddings mathematically encode conceptual meaning.
 
-7.2 Embedding Model
+**7.2 Embedding Model**
 
 Model used:
 
@@ -184,7 +183,7 @@ all-MiniLM-L6-v2
 Implemented using:
 
 Sentence Transformers
-7.3 Embedding Characteristics
+**7.3 Embedding Characteristics**
 
 Embedding dimension:
 
@@ -195,14 +194,13 @@ Embeddings enable:
 semantic similarity search
 paraphrase retrieval
 conceptual matching
-8. Vector Database Layer
-8.1 Purpose
-
+**8. Vector Database Layer
+8.1 Purpose**
 Embeddings must be persisted and indexed for efficient retrieval.
 
 Qdrant was selected as the vector database.
 
-8.2 Why Qdrant
+**8.2 Why Qdrant**
 
 Qdrant provides:
 
@@ -210,7 +208,7 @@ vector indexing
 nearest-neighbor search
 metadata payload support
 cosine similarity retrieval
-8.3 Storage Schema
+**8.3 Storage Schema**
 
 Each vector point contains:
 
@@ -224,12 +222,11 @@ Example payload:
     "text": chunk.page_content,
     "source": source_document
 }
-9. Semantic Retrieval Layer
-9.1 Purpose
-
+**9. Semantic Retrieval Layer
+9.1 Purpose**
 Semantic retrieval enables conceptual search rather than keyword matching.
 
-9.2 Retrieval Flow
+**9.2 Retrieval Flow**
 User Query
     ↓
 Query Embedding
@@ -237,7 +234,7 @@ Query Embedding
 Vector Similarity Search
     ↓
 Top Semantic Matches
-9.3 Retrieval Method
+**9.3 Retrieval Method**
 
 Implemented using:
 
@@ -255,8 +252,8 @@ to retrieve:
 
 without exact lexical overlap.
 
-10. BM25 Lexical Retrieval Layer
-10.1 Motivation
+**10. BM25 Lexical Retrieval Layer
+10.1 Motivation**
 
 Semantic retrieval performs poorly on:
 
@@ -280,15 +277,15 @@ BM25 uses:
 term frequency
 inverse document frequency
 lexical relevance scoring
-10.3 Purpose
+**10.3 Purpose**
 
 BM25 complements semantic retrieval by improving:
 
 operational precision
 exact keyword matching
 infrastructure terminology retrieval
-11. Hybrid Retrieval Layer
-11.1 Motivation
+**11. Hybrid Retrieval Layer
+11.1 Motivation**
 
 Enterprise retrieval requires both:
 
@@ -297,7 +294,7 @@ lexical precision
 
 Therefore semantic retrieval and BM25 retrieval were combined.
 
-11.2 Fusion Strategy
+**11.2 Fusion Strategy**
 
 Implemented using:
 
@@ -314,7 +311,7 @@ k+r(d)
 	​
 
 
-11.3 Why RRF
+**11.3 Why RRF**
 
 Semantic similarity scores and BM25 scores are not directly compatible.
 
@@ -329,8 +326,8 @@ This improves:
 retrieval robustness
 ranking stability
 hybrid precision
-12. Cross-Encoder Reranking
-12.1 Motivation
+**12. Cross-Encoder Reranking
+12.1 Motivation**
 
 Initial retrieval systems optimize:
 
@@ -339,7 +336,7 @@ recall
 But enterprise systems require:
 
 precision
-12.2 Reranker Model
+**12.2 Reranker Model**
 
 Model used:
 
@@ -357,14 +354,13 @@ This significantly improves:
 contextual relevance
 evidence quality
 ranking precision
-13. Grounded Generation Layer
-13.1 Purpose
-
+**13. Grounded Generation Layer
+13.1 Purpose**
 The final layer synthesizes answers using retrieved evidence.
 
 The LLM is constrained to retrieved context.
 
-13.2 Generation Pipeline
+**13.2 Generation Pipeline**
 Retrieved Chunks
         ↓
 Context Assembly
@@ -374,7 +370,7 @@ Prompt Construction
 LLM Synthesis
         ↓
 Grounded Answer
-13.3 Local LLM Integration
+**13.3 Local LLM Integration**
 
 Generation was implemented locally using:
 
@@ -387,7 +383,7 @@ no API dependency
 lower cost
 enterprise privacy
 self-hosted deployment
-14. Final Retrieval-Augmented Generation Architecture
+**14. Final Retrieval-Augmented Generation Architecture**
 
 Final system pipeline:
 
@@ -414,9 +410,8 @@ Grounded Context
 Local LLM Generation
           ↓
 Final Response
-15. Key Architectural Insights
-15.1 Retrieval Quality Dominates AI Quality
-
+**15. Key Architectural Insights
+15.1 Retrieval Quality Dominates AI Quality**
 The system demonstrated that:
 
 retrieval quality
@@ -428,8 +423,7 @@ matter more than:
 prompt engineering
 agent complexity
 chatbot interfaces
-15.2 The LLM Is Not The Knowledge Source
-
+**15.2 The LLM Is Not The Knowledge Source**
 The language model acts only as:
 
 a synthesis layer
@@ -437,7 +431,7 @@ a synthesis layer
 Knowledge originates from:
 
 enterprise retrieval infrastructure
-15.3 Hybrid Retrieval Is Essential
+**15.3 Hybrid Retrieval Is Essential**
 
 Enterprise systems require:
 
@@ -446,19 +440,19 @@ exact operational matching
 
 Neither semantic search nor BM25 alone is sufficient.
 
-16. Future Improvements
+**16. Future Improvements**
 
 Potential future extensions include:
 
-16.1 Metadata-Aware Retrieval
+**16.1 Metadata-Aware Retrieval**
 environment filters
 timestamps
 service-level filtering
-16.2 Conversational Retrieval
+**16.2 Conversational Retrieval**
 memory
 multi-turn reasoning
 contextual follow-ups
-16.3 GraphRAG
+**16.3 GraphRAG**
 entity extraction
 dependency graphs
 multi-hop retrieval
@@ -466,12 +460,12 @@ multi-hop retrieval
 planner agents
 retrieval routing
 iterative verification
-16.5 Evaluation and Observability
+**16.5 Evaluation and Observability**
 retrieval metrics
 hallucination tracking
 latency analysis
 grounding validation
-17. Conclusion
+**17. Conclusion**
 
 This project implemented a modern enterprise Retrieval-Augmented Generation architecture from first principles.
 
