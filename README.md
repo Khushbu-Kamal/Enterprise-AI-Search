@@ -1,5 +1,6 @@
 Enterprise AI Search and Retrieval Platform
 Technical Architecture Document
+
 **1. Introduction**
 
 This document describes the design and implementation of an enterprise-grade Retrieval-Augmented Generation (RAG) platform built using modern semantic retrieval techniques, vector databases, hybrid search architecture, reranking pipelines, and grounded language model synthesis.
@@ -22,6 +23,7 @@ Lexical retrieval
 Hybrid retrieval fusion
 Cross-encoder reranking
 Grounded answer generation using local LLMs
+
 **2. System Objectives**
 
 The platform was designed to solve the following problems:
@@ -58,6 +60,7 @@ The LLM acts as:
 
 a synthesis layer
 not the knowledge source itself
+
 **3. High-Level Architecture**
 
 System architecture:
@@ -85,6 +88,8 @@ Cross-Encoder Reranking
 Grounded Context Assembly
           ↓
 LLM-Based Answer Generation
+
+
 **4. Filesystem Discovery Layer
 4.1 Purpose**
 
@@ -167,6 +172,8 @@ This significantly improves:
 retrieval quality
 grounding precision
 reranking effectiveness
+
+
 **7. Embedding Generation Layer
 7.1 Purpose**
 
@@ -194,6 +201,8 @@ Embeddings enable:
 semantic similarity search
 paraphrase retrieval
 conceptual matching
+
+
 **8. Vector Database Layer
 8.1 Purpose**
 Embeddings must be persisted and indexed for efficient retrieval.
@@ -222,6 +231,7 @@ Example payload:
     "text": chunk.page_content,
     "source": source_document
 }
+
 **9. Semantic Retrieval Layer
 9.1 Purpose**
 Semantic retrieval enables conceptual search rather than keyword matching.
@@ -284,6 +294,8 @@ BM25 complements semantic retrieval by improving:
 operational precision
 exact keyword matching
 infrastructure terminology retrieval
+
+
 **11. Hybrid Retrieval Layer
 11.1 Motivation**
 
@@ -326,6 +338,8 @@ This improves:
 retrieval robustness
 ranking stability
 hybrid precision
+
+
 **12. Cross-Encoder Reranking
 12.1 Motivation**
 
@@ -354,6 +368,8 @@ This significantly improves:
 contextual relevance
 evidence quality
 ranking precision
+
+
 **13. Grounded Generation Layer
 13.1 Purpose**
 The final layer synthesizes answers using retrieved evidence.
@@ -383,6 +399,8 @@ no API dependency
 lower cost
 enterprise privacy
 self-hosted deployment
+
+
 **14. Final Retrieval-Augmented Generation Architecture**
 
 Final system pipeline:
@@ -410,6 +428,8 @@ Grounded Context
 Local LLM Generation
           ↓
 Final Response
+
+
 **15. Key Architectural Insights
 15.1 Retrieval Quality Dominates AI Quality**
 The system demonstrated that:
@@ -465,6 +485,8 @@ retrieval metrics
 hallucination tracking
 latency analysis
 grounding validation
+
+
 **17. Conclusion**
 
 This project implemented a modern enterprise Retrieval-Augmented Generation architecture from first principles.
